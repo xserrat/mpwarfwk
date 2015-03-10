@@ -1,0 +1,15 @@
+{
+  "name": "xserrat/mpwarfwk-standard-edition",
+  "description": "Standard APP using MPWAR Framework",
+  "license": "Apache-2.0",
+  "keywords": [],
+  "homepage": "https://github.com/xserrat/mpwarfwk",
+  "type": "project",
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/xserrat/mpwarfwk"
+    }
+  ],
+  "minimum-stability": "dev"
+}
