@@ -1,10 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: xserrat
- * Date: 9/03/15
- * Time: 21:52
- */
+
+namespace Mpwarfwk\Component;
 
 class Bootstrap {
 

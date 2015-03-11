@@ -1,16 +1,13 @@
 {
-  "name": "xserrat/mpwarfwk-standard-edition",
+  "name": "xserrat/mpwarfwk",
   "description": "Standard APP using MPWAR Framework",
   "license": "Apache-2.0",
   "keywords": [],
   "homepage": "https://github.com/xserrat/mpwarfwk",
   "type": "project",
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "https://github.com/xserrat/mpwarfwk"
-    }
-  ],
+  "require": {
+    "php": ">=5.6.0"
+  },
   "minimum-stability": "dev",
   "autoload": {
     "psr-4": {
