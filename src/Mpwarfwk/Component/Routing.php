@@ -12,6 +12,9 @@ class Routing {
 
     public function getRouteController($requestUri){
         //TODO: Return controller namespace of the request.
+        echo "Request URI:$requestUri<br>";
+        echo "REGEX RESULT: ".preg_replace("/.(.+)/", "\\1", $requestUri);
+        exit;
         return "\Controllers\HomeController";
     }
 }
