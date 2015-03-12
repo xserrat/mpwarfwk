@@ -14,8 +14,7 @@ class Routing {
 
     public function getRouteController($route){
         //TODO: Return controller namespace of the request.
-
-        if(!in_array($route, $this->configRoutes)){
+        if(!array_key_exists($route, $this->configRoutes)){
             return false;
         }
         $controllerNamespace = $this->configRoutes[$route];
