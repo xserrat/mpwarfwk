@@ -20,4 +20,8 @@ class Bootstrap {
 
         $controller = new $classController();
     }
+
+    public static function getRootApplicationPath(){
+        return preg_replace("/(.+)\/.+/", "\\1", $_SERVER['DOCUMENT_ROOT']);
+    }
 }

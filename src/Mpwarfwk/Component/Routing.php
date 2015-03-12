@@ -8,13 +8,12 @@ class Routing {
     private $configRoutes;
 
     public function __construct(){
-        $pathConfigRoutes = $_SERVER['DOCUMENT_ROOT'] . "../config/routes.json";
-        $this->configRoutes = json_decode($pathConfigRoutes, true);
+        $jsonRoutesConfig = file_get_contents(Bootstrap::getRootApplicationPath() . "/config/routes.json");
+        $this->configRoutes = json_decode($jsonRoutesConfig, true);
     }
 
-    public function getRouteController($requestUri){
+    public function getRouteController($route){
         //TODO: Return controller namespace of the request.
-        $route = preg_replace("/.(.+)/", "\\1", $requestUri);
 
         if(!in_array($route, $this->configRoutes)){
             return false;
