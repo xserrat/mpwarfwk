@@ -15,7 +15,8 @@ class Bootstrap {
         $classController = $routing->getRouteController($requestUri);
 
         if(!$classController){
-            echo "Wrong routes in routes.json";
+            //TODO: Throw an exception!
+            echo "Wrong routes in routes.json";die;
         }
 
         $controller = new $classController();
