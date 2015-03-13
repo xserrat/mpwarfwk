@@ -7,14 +7,16 @@ use Mpwarfwk\FileParser\JsonFileParser,
 
 class Routing {
 
+    const YAML_CONFIG_FILE = 'routes.yaml';
+    const JSON_CONFIG_FILE = 'routes.json';
+
     private $configRoutes;
 
     /**
      * $parserClass FileParser
      */
     public function __construct(){
-        $parserClass = $this->getRoutesConfig();
-        $this->configRoutes = $parserClass->getFileData();
+        $this->configRoutes = $this->getRoutesConfig();
     }
 
     public function getRouteController($route){
@@ -22,14 +24,25 @@ class Routing {
         if(!array_key_exists($route, $this->configRoutes)){
             return false;
         }
-        list($controllerNamespace, $action) = $this->configRoutes[$route];
-        return array("controllerNamespace" => $controllerNamespace, "action" => $action);
+        $controllerNamespace = $this->configRoutes[$route]['controller'];
+        $action = $this->configRoutes[$route]['action'];
+        echo $controllerNamespace;
+        echo $action;exit;
+        return array($controllerNamespace, $action);
     }
 
     private function getRoutesConfig(){
         if(Bootstrap::getApplicationConfig()['routing-format'] === 'yaml'){
-            return new YamlFileParser();
+            $routesFile = $this->getRoutingFilePath(self::YAML_CONFIG_FILE);
+            $fileParser = new YamlFileParser($routesFile);
+        } else{
+            $routesFile = $this->getRoutingFilePath(self::JSON_CONFIG_FILE);
+            $fileParser = new JsonFileParser($routesFile);
         }
-        return new JsonFileParser();
+        return $fileParser->getFileData();
+    }
+
+    private function getRoutingFilePath($filename){
+        return Bootstrap::getRootApplicationPath() . "/config/" . $filename;
     }
 }
