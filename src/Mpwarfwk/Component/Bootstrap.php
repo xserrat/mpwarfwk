@@ -2,6 +2,8 @@
 
 namespace Mpwarfwk\Component;
 
+use Mpwarfwk\Http\Request;
+
 class Bootstrap {
 
     const CONFIG_FILE_NAME = "config.json";
@@ -14,11 +16,12 @@ class Bootstrap {
     public function __construct(){
         $this->routing = new Routing();
         $this->request = new Request();
+        $this->request->initializeFromGlobals();
         Bootstrap::getEnvironment();
     }
 
     public function run(){
-        $requestUri = $this->request->getRequestUri();
+        $requestUri = $this->request->getUri();
         list($classController, $action) = $this->routing->getRouteController($requestUri);
 
         if(!$classController || !$action){
