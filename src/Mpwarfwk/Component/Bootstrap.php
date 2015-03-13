@@ -6,21 +6,23 @@ class Bootstrap {
 
     const CONFIG_FILE_NAME = "config.json";
 
+    private $routing;
+    private $request;
+
     public function __construct(){
-        echo "Bootstrap<br>";
+        $this->routing = new Routing();
+        $this->request = new Request();
+        Bootstrap::getEnvironment();
     }
 
     public function run(){
-        $routing = new Routing();
-        $request = new Request();
-        $requestUri = $request->getRequestUri();
-        list($classController, $action) = $routing->getRouteController($requestUri);
+        $requestUri = $this->request->getRequestUri();
+        list($classController, $action) = $this->routing->getRouteController($requestUri);
 
         if(!$classController || !$action){
             //TODO: Throw an exception!
             echo "Wrong routes in routes.json";die;
         }
-
         $controller = new $classController();
         $controller->{$action}();
     }
@@ -31,5 +33,11 @@ class Bootstrap {
 
     public static function getApplicationConfig(){
         return json_decode(file_get_contents(static::getRootApplicationPath()."/config/".self::CONFIG_FILE_NAME), true);
+    }
+
+    public static function getEnvironment(){
+        echo "<pre>";
+        var_dump($_SERVER);
+        echo "</pre>";
     }
 }
