@@ -1,14 +1,14 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: xserrat
- * Date: 13/03/15
- * Time: 0:20
- */
 
 namespace Mpwarfwk\FileParser;
 
+abstract class AbstractFileParser implements FileParser{
 
-class AbstractFileParser {
+    protected $configRoutes = null;
 
+    abstract public function __construct();
+
+    public function getFileData(){
+        return $this->configRoutes;
+    }
 }

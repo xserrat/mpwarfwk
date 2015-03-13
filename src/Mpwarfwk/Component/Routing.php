@@ -2,14 +2,19 @@
 
 namespace Mpwarfwk\Component;
 
+use Mpwarfwk\FileParser\JsonFileParser,
+    Mpwarfwk\FileParser\YamlFileParser;
 
 class Routing {
 
     private $configRoutes;
 
+    /**
+     * $parserClass FileParser
+     */
     public function __construct(){
-        $jsonRoutesConfig = file_get_contents(Bootstrap::getRootApplicationPath() . "/config/routes.json");
-        $this->configRoutes = json_decode($jsonRoutesConfig, true);
+        $parserClass = $this->getRoutesConfig();
+        $this->configRoutes = $parserClass->getFileData();
     }
 
     public function getRouteController($route){
@@ -17,7 +22,14 @@ class Routing {
         if(!array_key_exists($route, $this->configRoutes)){
             return false;
         }
-        $controllerNamespace = $this->configRoutes[$route];
-        return $controllerNamespace;
+        list($controllerNamespace, $action) = $this->configRoutes[$route];
+        return array("controllerNamespace" => $controllerNamespace, "action" => $action);
+    }
+
+    private function getRoutesConfig(){
+        if(Bootstrap::getApplicationConfig()['routing-format'] === 'yaml'){
+            return new YamlFileParser();
+        }
+        return new JsonFileParser();
     }
 }
