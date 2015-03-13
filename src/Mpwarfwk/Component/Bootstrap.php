@@ -16,11 +16,10 @@ class Bootstrap {
     public function __construct(){
         $this->routing = new Routing();
         $this->request = new Request();
-        $this->request->initializeFromGlobals();
-        Bootstrap::getEnvironment();
     }
 
     public function run(){
+        $this->request->initializeFromGlobals();
         $requestUri = $this->request->getUri();
         list($classController, $action) = $this->routing->getRouteController($requestUri);
 
