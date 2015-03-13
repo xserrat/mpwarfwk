@@ -26,8 +26,6 @@ class Routing {
         }
         $controllerNamespace = $this->configRoutes[$route]['controller'];
         $action = $this->configRoutes[$route]['action'];
-        echo $controllerNamespace;
-        echo $action;exit;
         return array($controllerNamespace, $action);
     }
 

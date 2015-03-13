@@ -22,7 +22,7 @@ class Bootstrap {
         }
 
         $controller = new $classController();
-        $controller->{$action};
+        $controller->{$action}();
     }
 
     public static function getRootApplicationPath(){
