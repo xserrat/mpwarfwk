@@ -5,8 +5,8 @@ namespace Mpwarfwk\Component;
 class Bootstrap {
 
     const CONFIG_FILE_NAME = "config.json";
-    const PROD_ENVIRONMENT = 'prod';
-    const DEV_ENVIRONMENT = 'dev';
+    const PROD_ENVIRONMENT = 'PROD';
+    const DEV_ENVIRONMENT = 'DEV';
 
     private $routing;
     private $request;
