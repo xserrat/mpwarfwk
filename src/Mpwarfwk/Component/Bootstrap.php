@@ -21,6 +21,7 @@ class Bootstrap {
     public function run(){
         $this->request->initializeFromGlobals();
         $requestUri = $this->request->getUri();
+
         list($classController, $action) = $this->routing->getRouteController($requestUri);
 
         if(!$classController || !$action){

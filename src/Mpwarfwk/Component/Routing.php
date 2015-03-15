@@ -20,13 +20,30 @@ class Routing {
     }
 
     public function getRouteController($route){
-        //TODO: Return controller namespace of the request.
+        $result = $this->getProcessedRoute($route);
+        if(!is_array($result)){
+
+        }
         if(!array_key_exists($route, $this->configRoutes)){
             return false;
         }
         $controllerNamespace = $this->configRoutes[$route]['controller'];
         $action = $this->configRoutes[$route]['action'];
         return array($controllerNamespace, $action);
+    }
+
+    private function getProcessedRoute($route){
+        if($route === '/'){
+            return $route;
+        }
+        $baseRoute = preg_replace('/(\/[a-z]+)(\/[a-z]+)*(\/.+)/', '\\1', $route);
+        $action = preg_replace('(\/[a-z]+)(\/[a-z]+)*(\/.+)', '\\2', $route);
+        $rawParams = preg_replace('(\/[a-z]+)(\/[a-z]+)*(\/.+)', '\\3', $route);
+        echo "BaseRoute: $baseRoute<br>";
+        echo "Action: $action<br>";
+        echo "rawParams: $rawParams<br>";
+        exit;
+
     }
 
     private function getRoutesConfig(){
