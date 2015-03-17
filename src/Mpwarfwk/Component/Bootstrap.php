@@ -2,7 +2,10 @@
 
 namespace Mpwarfwk\Component;
 
-use Mpwarfwk\Http\Request;
+use Mpwarfwk\Component\Http\Request,
+    Mpwarfwk\Component\Session\Session,
+    Mpwarfwk\Component\Routing\Route,
+    Mpwarfwk\Component\Routing\Routing;
 
 class Bootstrap {
 
@@ -15,21 +18,29 @@ class Bootstrap {
 
     public function __construct(){
         $this->routing = new Routing();
-        $this->request = new Request();
+        $this->request = new Request(new Session());
     }
 
     public function run(){
-        $this->request->initializeFromGlobals();
-        $requestUri = $this->request->getUri();
-
-        list($classController, $action) = $this->routing->getRouteController($requestUri);
-
-        if(!$classController || !$action){
+        $route = $this->routing->getRouteController($this->request);
+        if(is_null($route)){
             //TODO: Throw an exception!
             echo "Wrong routes in routes.json";die;
         }
-        $controller = new $classController();
-        $controller->{$action}();
+        $response = $this->executeController($route);
+        return $response;
+    }
+
+    private function executeController(Route $route){
+        $controllerNamespace = $route->getControllerNamespace();
+        $controller = new $controllerNamespace();
+
+        if(is_null($route->getParameters())){
+            $response = $controller->{$route->getAction()}();
+        } else{
+            $response = $controller->{$route->getAction()}($this->request);
+        }
+        return $response;
     }
 
     public static function getRootApplicationPath(){

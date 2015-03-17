@@ -23,7 +23,7 @@ class Routing {
         $this->configRoutes = $this->getRoutesConfig();
     }
 
-    //TODO: Rehacer getRouteController!!
+    //TODO: Reorganize route processing!!
     public function getRouteController(Request $request){
         //Uri is only '/'
         if(is_null($request->getBaseUri())){
