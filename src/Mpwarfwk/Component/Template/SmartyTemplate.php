@@ -11,7 +11,7 @@ class SmartyTemplate implements TemplateInterface{
         $this->smarty = new \Smarty();
     }
 
-    public function render($template, array $params){
+    public function render($template, array $params = array()){
         foreach($params as $key => $value){
             $this->smarty->assign($key, $value);
         }

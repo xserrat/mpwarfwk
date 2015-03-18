@@ -19,7 +19,7 @@ class TwigTemplate implements TemplateInterface{
         $this->twig = $twig;
     }
 
-    public function render($template, array $params){
+    public function render($template, array $params = array()){
         return $this->twig->render($template, $params);
     }
 }
