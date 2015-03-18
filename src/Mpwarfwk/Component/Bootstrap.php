@@ -34,12 +34,7 @@ class Bootstrap {
     private function executeController(Route $route){
         $controllerNamespace = $route->getControllerNamespace();
         $controller = new $controllerNamespace();
-
-        if(is_null($route->getParameters())){
-            $response = $controller->{$route->getAction()}();
-        } else{
-            $response = $controller->{$route->getAction()}($this->request);
-        }
+        $response = $controller->{$route->getAction()}($this->request);
         return $response;
     }
 
