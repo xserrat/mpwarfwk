@@ -10,7 +10,6 @@ class Request {
 
     protected $uri;
     protected $baseUri;
-    protected $actionUri;
     protected $paramsUri;
     protected $method;
     public $getParams;
@@ -33,7 +32,7 @@ class Request {
     }
 
     private function initializeFromGlobals(){
-        $this->uri = $_SERVER['REQUEST_URI'];
+        $this->uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH); //To avoid GET params
         $this->processingUri();
         $this->method = $_SERVER['REQUEST_METHOD'];
         $this->getParams = new Parameters($_GET);
@@ -77,8 +76,7 @@ class Request {
     private function processingUri(){
         $uriArray = explode('/', $this->uri);
         array_shift($uriArray); //Extract empty element from array
-        $this->baseUri = array_shift($uriArray);
-        $this->actionUri = array_shift($uriArray);
+        $this->baseUri = '/' . array_shift($uriArray);
         $this->paramsUri = !empty($uriArray)?$uriArray:null; //Get the last elements from uri as parameters
     }
 
@@ -86,13 +84,7 @@ class Request {
         return $this->baseUri;
     }
 
-    public function getActionUri(){
-        return $this->actionUri;
-    }
-
     public function getParamsUri(){
         return $this->paramsUri;
     }
-
-
 }
