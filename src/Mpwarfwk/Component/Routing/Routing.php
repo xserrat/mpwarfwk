@@ -24,63 +24,14 @@ class Routing {
     }
 
     //TODO: Reorganize route processing!!
-    public function getRouteController(Request $request){
-        //Uri is only '/'
-        if(is_null($request->getBaseUri())){
-            if(!array_key_exists('/', $this->configRoutes)){
-                return null;
-            }
-            $controllerNamespace = $this->configRoutes['/']['controller'];
-            $action = $this->configRoutes['/']['action'];
-            return new Route($controllerNamespace, $action, null);
-        }
-
-        //Uri only have controller
-        if(is_null($request->getActionUri())){
-            $route = '/' . $request->getBaseUri();
-            if(!array_key_exists($route, $this->configRoutes)){
-                return null;
-            }
-            $controllerNamespace = $controllerNamespace = $this->configRoutes[$route]['controller'];
-            $action = $this->configRoutes[$route]['action'];
-            return new Route($controllerNamespace, $action, null);
-        }
-
-        //Uri only have controller and action
-        if(is_null($request->getParamsUri())){
-            $route = '/' . $request->getBaseUri() . '/' . $request->getActionUri();
-            if(!array_key_exists($route, $this->configRoutes)){
-                return null;
-            }
-            $controllerNamespace = $this->configRoutes[$route]['controller'];
-
-            //If config has defined default action, it has lower priority than action from uri
-            $action = $this->getCamelCaseFromHyphen($request->getActionUri());
-            return new Route($controllerNamespace, $action, null);
-        }
-
-        //En el caso de ahora, se irá a la misma ruta que el caso sin parametros pero se pasaran los parametros
-        //TODO: Uri have controller, action and parameters. (Si no se dice nada, se mirará si existe la
-        //TODO: ruta con baseUri+actionUri y se pasarán por parámetro los valores.
-        $route = '/' . $request->getBaseUri() . '/' . $request->getActionUri();
-        if(!array_key_exists($route, $this->configRoutes)){
+    public function getRouteController(Request $request)
+    {
+        if (!array_key_exists($request->getBaseUri(), $this->configRoutes)) {
             return null;
         }
-        $controllerNamespace = $this->configRoutes[$route]['controller'];
-        $action = $this->getCamelCaseFromHyphen($request->getActionUri());
-        $params = array();
-        foreach($request->getParamsUri() as $param){
-            array_push($params, $this->getCamelCaseFromHyphen($param));
-        }
-        return new Route($controllerNamespace, $action, $params);
-    }
-
-    private function getCamelCaseFromHyphen($string){
-        //Conversion from hyphen to camelCase
-        $parts = explode('-', $string);
-        $parts = array_map('ucfirst', $parts);
-        $string = lcfirst(implode('', $parts));
-        return $string;
+        $controllerNamespace = $this->configRoutes[$request->getBaseUri()]['controller'];
+        $action = $this->configRoutes[$request->getBaseUri()]['action'];
+        return new Route($controllerNamespace, $action);
     }
 
     private function getRoutesConfig(){
