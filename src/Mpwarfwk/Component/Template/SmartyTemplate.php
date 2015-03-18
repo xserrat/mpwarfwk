@@ -1,22 +1,21 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: xserrat
- * Date: 14/03/15
- * Time: 11:59
- */
 
 namespace Mpwarfwk\Component\Template;
 
 
 class SmartyTemplate implements TemplateInterface{
 
-    public function __construct(){
+    private $smarty;
 
+    public function __construct(){
+        $this->smarty = new \Smarty();
     }
 
-    public function renderView($view, array $params){
-
+    public function render($template, array $params){
+        foreach($params as $key => $value){
+            $this->smarty->assign($key, $value);
+        }
+        return $this->smarty->fetch($template);
     }
 
 }

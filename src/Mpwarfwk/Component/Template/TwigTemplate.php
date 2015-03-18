@@ -11,12 +11,15 @@ namespace Mpwarfwk\Component\Template;
 
 class TwigTemplate implements TemplateInterface{
 
-    public function __construct(){
+    private $twig;
 
+    public function __construct($templatesPath){
+        $loader = new \Twig_Loader_Filesystem($templatesPath);
+        $twig = new \Twig_Environment($loader, array());
+        $this->twig = $twig;
     }
 
-    public function renderView($view, array $params){
-
+    public function render($template, array $params){
+        return $this->twig->render($template, $params);
     }
-
 }

@@ -3,5 +3,5 @@
 namespace Mpwarfwk\Component\Template;
 
 interface TemplateInterface {
-    public function renderView($view, array $params);
+    public function render($template, array $params);
 }
