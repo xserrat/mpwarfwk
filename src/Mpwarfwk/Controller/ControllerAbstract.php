@@ -10,9 +10,9 @@ use Mpwarfwk\Component\Template\TwigTemplate;
 
 abstract class ControllerAbstract extends ContainerAbstract{
 
-    public function forward($controller, $action, Request $request){}
-    public function redirect($url, $statusCode = Response::HTTP_TEMPORARY_REDIRECT){
-
+    public function forward($controller, $action, Request $request){
+        $contr = new $controller();
+        $contr->{$action}($request);
     }
 
     public function get($id){
@@ -34,7 +34,4 @@ abstract class ControllerAbstract extends ContainerAbstract{
         $smarty = $this->container->get('templating-smarty');
         return $smarty->render($template, $params);
     }
-    //public function getParam($paramName){}
-    public function hasParam($paramName){}
-    public function getRequest(){}
 }
