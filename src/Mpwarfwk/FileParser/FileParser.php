@@ -2,6 +2,6 @@
 
 namespace Mpwarfwk\FileParser;
 
-interface FileParser {
+interface FileParserInterface {
     public function getFileData();
 }

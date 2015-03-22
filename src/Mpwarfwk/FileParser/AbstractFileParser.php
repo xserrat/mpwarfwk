@@ -2,7 +2,7 @@
 
 namespace Mpwarfwk\FileParser;
 
-abstract class AbstractFileParser implements FileParser{
+abstract class AbstractFileParser implements FileParserInterface{
 
     protected $configRoutes = null;
 
