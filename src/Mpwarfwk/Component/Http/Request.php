@@ -52,7 +52,7 @@ class Request {
     }
 
     public function getMethod(){
-        $this->method;
+        return $this->method;
     }
 
     public function getFileInfo($fileKey){
