@@ -1,21 +1,20 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: xserrat
- * Date: 14/03/15
- * Time: 11:59
- */
 
 namespace Mpwarfwk\Component\Template;
 
+use Mpwarfwk\Component\Bootstrap;
 
 class TwigTemplate implements TemplateInterface{
 
-    private $twig;
+    protected $twig;
 
-    public function __construct($templatesPath){
+    public function __construct($templatesPath = null){
+        if(is_null($templatesPath)){
+            $defaultPath = Bootstrap::getApplicationConfig()['default-twig-templates-path'];
+            $templatesPath = Bootstrap::getRootApplicationPath() . '/' . $defaultPath;
+        }
         $loader = new \Twig_Loader_Filesystem($templatesPath);
-        $twig = new \Twig_Environment($loader, array());
+        $twig = new \Twig_Environment($loader, array('cache' => false));
         $this->twig = $twig;
     }
 
