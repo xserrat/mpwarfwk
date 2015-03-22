@@ -18,7 +18,7 @@ class Container implements ContainerInterface{
         $this->configServices = $fileParser->getFileData()['services'];
     }
 
-    public function get($service, $returnServiceInstance = false){
+    public function get($service){
         if(!array_key_exists($service, $this->configServices)){
             throw new ServiceNotFoundException('Service Not Found in services.yaml');
         }
@@ -31,10 +31,10 @@ class Container implements ContainerInterface{
             $serviceArguments = array();
             foreach($serviceConfig['arguments'] as $argument){
                 if($argument[0] === '@'){ //if argument is another service
-                    $anotherService = $this->get(preg_replace('/@(.+)/', '\\1', $argument), true);
+                    $anotherService = $this->get(preg_replace('/@(.+)/', '\\1', $argument));
                     $serviceArguments[] = $anotherService;
                 }
-                if(class_exists($argument)){
+                elseif(class_exists($argument)){
                     $serviceArguments[] = new $argument;
                 } else{
                     $serviceArguments[] = $argument;
@@ -44,10 +44,6 @@ class Container implements ContainerInterface{
         } else{
             $this->service = new $serviceNamespace();
         }
-        if($returnServiceInstance){
-            return $this->service;
-        } else{
-            return $this->service->run();
-        }
+        return $this->service->run();
     }
 }
