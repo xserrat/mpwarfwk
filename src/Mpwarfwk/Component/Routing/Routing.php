@@ -2,11 +2,12 @@
 
 namespace Mpwarfwk\Component\Routing;
 
-use \Mpwarfwk\FileParser\JsonFileParser,
-    \Mpwarfwk\FileParser\YamlFileParser;
-use \Mpwarfwk\Component\Http\Request;
-use \Mpwarfwk\Component\Bootstrap;
-use Mpwarfwk\FileParser\PhpFileParser;
+use Mpwarfwk\FileParser\JsonFileParser,
+    Mpwarfwk\FileParser\YamlFileParser,
+    Mpwarfwk\FileParser\PhpFileParser;
+use Mpwarfwk\Component\Http\Request;
+use Mpwarfwk\Component\Bootstrap;
+use Mpwarfwk\Exception\RouteNotFoundException;
 
 class Routing {
 
@@ -23,11 +24,10 @@ class Routing {
         $this->configRoutes = $this->getRoutesConfig();
     }
 
-    //TODO: Reorganize route processing!!
     public function getRouteController(Request $request)
     {
         if (!array_key_exists($request->getBaseUri(), $this->configRoutes)) {
-            return null;
+            throw new RouteNotFoundException("The route '{$request->getBaseUri()}' introduced doesn't exist");
         }
         $controllerNamespace = $this->configRoutes[$request->getBaseUri()]['controller'];
         $action = $this->configRoutes[$request->getBaseUri()]['action'];
