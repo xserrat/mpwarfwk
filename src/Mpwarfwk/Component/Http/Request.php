@@ -17,7 +17,10 @@ class Request {
     protected $files;
     protected $cookies;
     protected $server;
-    protected $session;
+    public $session;
+
+    static $documentRoot;
+    static $scriptFilename;
 
     public function __construct(Session $session){
 
@@ -29,6 +32,8 @@ class Request {
         $_POST = array();
         $_COOKIE = array();
         $_SERVER = array();
+        self::$documentRoot = $this->server['DOCUMENT_ROOT'];
+        self::$scriptFilename = $this->server['SCRIPT_FILENAME'];
     }
 
     private function initializeFromGlobals(){
@@ -40,7 +45,6 @@ class Request {
         $this->files = $_FILES;
         $this->cookies = $_COOKIE;
         $this->server = $_SERVER;
-        $this->session = $_SESSION;
     }
 
     public function getUri(){
@@ -69,6 +73,18 @@ class Request {
         return array_key_exists($cookieKey, $this->cookies);
     }
 
+    public function setCookie($key, $value, $expire = null){
+        if(array_key_exists($key, $this->cookies)){
+            $_COOKIE[$key] = $value;
+            $this->cookies[$key] = $value;
+        } else{
+            if($expire = null){
+                $expire = time() + 3600;
+            }
+            setcookie($key, $value, $expire);
+        }
+    }
+
     public function getContentType(){
         return $this->server['CONTENT_TYPE'];
     }
@@ -86,5 +102,9 @@ class Request {
 
     public function getParamsUri(){
         return $this->paramsUri;
+    }
+
+    public function getParamUri($key){
+        return $this->paramsUri[$key];
     }
 }
