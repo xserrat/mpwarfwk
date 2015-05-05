@@ -2,6 +2,7 @@
 
 namespace Mpwarfwk\Component;
 
+use Mpwarfwk\Component\Caching\DiskCache;
 use Mpwarfwk\Component\Caching\MemoryCache;
 use Mpwarfwk\Component\Http\HttpResponse;
 use Mpwarfwk\Component\Http\Request,
@@ -27,7 +28,8 @@ class Bootstrap {
         $this->request = new Request(new Session());
         $this->routing = new Routing();
         $this->container = new Container();
-        $this->cache = new MemoryCache();
+        //$this->cache = new MemoryCache();
+        $this->cache = new DiskCache();
     }
 
     public function run(){
@@ -42,19 +44,26 @@ class Bootstrap {
 
         //Check if controller has ControllerAbstract extended to set container object
         $controller = $this->injectContainer($controller);
+
+        $paramsDefinition = $controller->getCacheDefinition($controllerNamespace, $route->getAction(), $this->request);
+
+        $cache = $this->getCache($paramsDefinition);
         
+        if($cache){
+            echo "cache";
+            return $cache;
+        }
         $response = $controller->{$route->getAction()}($this->request);
-        $this->addCache($controllerNamespace, $route->getAction(), $response->getContent());
+        $this->saveCache($paramsDefinition, $response);
         return $response;
     }
 
-    private function addCache($controllerNamespace, $methodName, $content){
-        $parameters = array(
-            'controller' => $controllerNamespace,
-            'method' => $methodName,
-            'user' => md5($this->request->getParamUri(0))
-        );
+    private function getCache($parameters){
+        $keyName = $this->cache->getKeyName($parameters);
+        return $this->cache->get($keyName);
+    }
 
+    private function saveCache($parameters, $content){
         $keyName = $this->cache->getKeyName($parameters);
         $this->cache->set($keyName, $content, self::CACHE_EXPIRATION_SECONDS);
     }
