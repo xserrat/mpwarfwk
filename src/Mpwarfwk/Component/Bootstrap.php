@@ -50,7 +50,6 @@ class Bootstrap {
         $cache = $this->getCache($paramsDefinition);
 
         if($cache){
-            echo "cache";
             return $cache;
         }
         $response = $controller->{$route->getAction()}($this->request);
