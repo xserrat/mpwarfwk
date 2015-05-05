@@ -2,6 +2,8 @@
 
 namespace Mpwarfwk\Component;
 
+use Mpwarfwk\Component\Caching\MemoryCache;
+use Mpwarfwk\Component\Http\HttpResponse;
 use Mpwarfwk\Component\Http\Request,
     Mpwarfwk\Component\Session\Session,
     Mpwarfwk\Component\Routing\Route,
@@ -15,6 +17,7 @@ class Bootstrap {
     const CONFIG_FILE_NAME = "config.yaml";
     const PROD_ENVIRONMENT = 'PROD';
     const DEV_ENVIRONMENT = 'DEV';
+    const CACHE_EXPIRATION_SECONDS = 30;
 
     private $routing;
     private $request;
@@ -24,14 +27,11 @@ class Bootstrap {
         $this->request = new Request(new Session());
         $this->routing = new Routing();
         $this->container = new Container();
+        $this->cache = new MemoryCache();
     }
 
     public function run(){
         $route = $this->routing->getRouteController($this->request);
-        if(is_null($route)){
-            //TODO: Throw an exception!
-            echo "Wrong routes in routes.json";die;
-        }
         $response = $this->executeController($route);
         return $response;
     }
@@ -42,9 +42,21 @@ class Bootstrap {
 
         //Check if controller has ControllerAbstract extended to set container object
         $controller = $this->injectContainer($controller);
-
+        
         $response = $controller->{$route->getAction()}($this->request);
+        $this->addCache($controllerNamespace, $route->getAction(), $response->getContent());
         return $response;
+    }
+
+    private function addCache($controllerNamespace, $methodName, $content){
+        $parameters = array(
+            'controller' => $controllerNamespace,
+            'method' => $methodName,
+            'user' => md5($this->request->getParamUri(0))
+        );
+
+        $keyName = $this->cache->getKeyName($parameters);
+        $this->cache->set($keyName, $content, self::CACHE_EXPIRATION_SECONDS);
     }
 
     private function injectContainer($controller){
