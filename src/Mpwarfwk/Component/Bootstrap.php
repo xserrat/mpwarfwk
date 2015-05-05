@@ -48,7 +48,7 @@ class Bootstrap {
         $paramsDefinition = $controller->getCacheDefinition($controllerNamespace, $route->getAction(), $this->request);
 
         $cache = $this->getCache($paramsDefinition);
-        
+
         if($cache){
             echo "cache";
             return $cache;
