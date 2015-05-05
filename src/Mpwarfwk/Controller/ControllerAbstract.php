@@ -34,4 +34,12 @@ abstract class ControllerAbstract extends ContainerAbstract{
         $smarty = $this->container->get('templating-smarty');
         return $smarty->render($template, $params);
     }
+
+    public function getCacheDefinition($controllerNamespace, $methodName, Request $request){
+        $parameters = array(
+            'controller' => $controllerNamespace,
+            'method' => $methodName
+        );
+        return $parameters;
+    }
 }
