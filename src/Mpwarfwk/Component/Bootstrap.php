@@ -18,7 +18,7 @@ class Bootstrap {
     const CONFIG_FILE_NAME = "config.yaml";
     const PROD_ENVIRONMENT = 'PROD';
     const DEV_ENVIRONMENT = 'DEV';
-    const CACHE_EXPIRATION_SECONDS = 30;
+    const CACHE_EXPIRATION_SECONDS = 2;
 
     private $routing;
     private $request;
@@ -28,8 +28,8 @@ class Bootstrap {
         $this->request = new Request(new Session());
         $this->routing = new Routing();
         $this->container = new Container();
-        //$this->cache = new MemoryCache();
-        $this->cache = new DiskCache();
+        $this->cache = new MemoryCache();
+        //$this->cache = new DiskCache();
     }
 
     public function run(){
