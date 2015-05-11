@@ -2,9 +2,9 @@
 
 namespace Mpwarfwk\Controller;
 
+use Mpwarfwk\Component\Container\Container;
 use Mpwarfwk\Component\Http\Request;
 use Mpwarfwk\Component\Container\ContainerAbstract;
-use Mpwarfwk\Component\Http\Response;
 use Mpwarfwk\Component\Template\SmartyTemplate;
 use Mpwarfwk\Component\Template\TwigTemplate;
 
@@ -12,7 +12,10 @@ abstract class ControllerAbstract extends ContainerAbstract{
 
     public function forward($controller, $action, Request $request){
         $contr = new $controller();
-        $contr->{$action}($request);
+        if(get_parent_class($contr) === 'Mpwarfwk\Controller\ControllerAbstract'){
+            $contr->setContainer(new Container());
+        }
+        return $contr->{$action}($request);
     }
 
     public function get($id){
