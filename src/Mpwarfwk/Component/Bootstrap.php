@@ -42,9 +42,6 @@ class Bootstrap {
         $controllerNamespace = $route->getControllerNamespace();
         $controller = new $controllerNamespace();
 
-        //Check if controller has ControllerAbstract extended to set container object
-        $controller = $this->injectContainer($controller);
-
         $paramsDefinition = $controller->getCacheDefinition($controllerNamespace, $route->getAction(), $this->request);
 
         $cache = $this->getCache($paramsDefinition);
@@ -52,6 +49,10 @@ class Bootstrap {
         if($cache){
             return $cache;
         }
+
+        //Check if controller has ControllerAbstract extended to set container object
+        $controller = $this->injectContainer($controller);
+
         $response = $controller->{$route->getAction()}($this->request);
         $this->saveCache($paramsDefinition, $response);
         return $response;
