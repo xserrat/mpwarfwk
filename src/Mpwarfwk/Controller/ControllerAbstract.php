@@ -10,7 +10,7 @@ use Mpwarfwk\Component\Template\TwigTemplate;
 
 abstract class ControllerAbstract extends ContainerAbstract{
 
-    public $cache = false;
+    public $enableCache = false;
 
     public function forward($controller, $action, Request $request){
         $contr = new $controller();
