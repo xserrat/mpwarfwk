@@ -10,6 +10,8 @@ use Mpwarfwk\Component\Template\TwigTemplate;
 
 abstract class ControllerAbstract extends ContainerAbstract{
 
+    public $cache = false;
+
     public function forward($controller, $action, Request $request){
         $contr = new $controller();
         if(get_parent_class($contr) === 'Mpwarfwk\Controller\ControllerAbstract'){
