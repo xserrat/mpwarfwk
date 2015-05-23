@@ -18,7 +18,6 @@ class Bootstrap {
     const CONFIG_FILE_NAME = "config.yaml";
     const PROD_ENVIRONMENT = 'PROD';
     const DEV_ENVIRONMENT = 'DEV';
-    const CACHE_EXPIRATION_SECONDS = 2;
 
     private $routing;
     private $request;
@@ -70,9 +69,10 @@ class Bootstrap {
 
     private function saveCache($parameters, $content){
         $keyName = $this->cache->getKeyName($parameters);
-        $this->cache->set($keyName, $content, self::CACHE_EXPIRATION_SECONDS);
+        $cacheExpirationSeconds = static::getApplicationConfig()['cache']['controller-expiration'];
+        $this->cache->set($keyName, $content, $cacheExpirationSeconds);
     }
-
+    
     private function injectContainer($controller){
         if(get_parent_class($controller) === 'Mpwarfwk\Controller\ControllerAbstract'){
             $controller->setContainer($this->container);
