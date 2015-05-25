@@ -14,7 +14,8 @@ class TwigTemplate implements TemplateInterface{
             $templatesPath = Bootstrap::getRootApplicationPath() . '/' . $defaultPath;
         }
         $loader = new \Twig_Loader_Filesystem($templatesPath);
-        $twig = new \Twig_Environment($loader, array('auto_reload' => true, 'cache' => true));
+        $cacheTwigConfig = Bootstrap::getApplicationConfig()['cache-twig'];
+        $twig = new \Twig_Environment($loader, $cacheTwigConfig);
         $this->twig = $twig;
     }
 
