@@ -89,6 +89,14 @@ class Request {
         return $this->server['CONTENT_TYPE'];
     }
 
+    public function getRemoteAddress(){
+        return $this->server['REMOTE_ADDR'];
+    }
+
+    public function getUserAgent(){
+        return $this->server['HTTP_USER_AGENT'];
+    }
+
     private function processingUri(){
         $uriArray = explode('/', $this->uri);
         array_shift($uriArray); //Extract empty element from array
