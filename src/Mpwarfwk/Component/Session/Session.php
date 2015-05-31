@@ -25,7 +25,7 @@ class Session {
         $rootApplicationPath = preg_replace('/(.+)\/.+/', '\\1', $_SERVER['DOCUMENT_ROOT']);
         $fileParser = new YamlFileParser($rootApplicationPath . '/config/' . self::DB_CONFIG);
 
-        $dbConfig = $fileParser->getFileData()['database-CRUD-permisions'];
+        $dbConfig = $fileParser->getFileData()['database-user-permisions'];
         $this->pdo->setConfig($dbConfig['host'], $dbConfig['dbname'], $dbConfig['username'], $dbConfig['password']);
 
         if(!$this->isSessionIdExist($this->sessionId)){
