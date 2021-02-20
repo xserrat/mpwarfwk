@@ -1,0 +1,22 @@
+{
+  "name": "xserrat/mpwarfwk",
+  "description": "MPWAR Framework",
+  "license": "Apache-2.0",
+  "keywords": [],
+  "homepage": "https://github.com/xserrat/mpwarfwk",
+  "type": "project",
+  "require": {
+    "php": ">=5.6.0",
+    "symfony/yaml": "3.0.*",
+    "twig/twig": "2.0.*",
+    "smarty/smarty": "3.1.*",
+    "foolz/sphinxql-query-builder": "0.9.9",
+    "predis/predis": "1.0.1"
+  },
+  "minimum-stability": "dev",
+  "autoload": {
+    "psr-4": {
+      "": "src/"
+    }
+  }
+}
